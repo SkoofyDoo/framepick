@@ -14,6 +14,7 @@ export function useVideoSlicer(){
     const [progress, setProgress] = useState(0)
     const [isProcessing, setIsProcessing] = useState(false)
     const workerRef = useRef<Worker | null>(null)
+    
 
     async function processVideo(file: File, maxFrames: number = 100){
         setIsProcessing(true)
@@ -27,6 +28,8 @@ export function useVideoSlicer(){
         video.src = URL.createObjectURL(file)
         video.muted = true
         video.playsInline = true
+        video.preload = 'auto';
+        
 
         await new Promise<void>((resolve) => {
             video.onloadedmetadata = () => resolve()
