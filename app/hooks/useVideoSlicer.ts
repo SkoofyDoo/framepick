@@ -44,7 +44,7 @@ export function useVideoSlicer(){
         for (let i = 0; i < maxFrames; i++){
             await new Promise<void>((resolve) => {
                 video.onseeked = async () => {
-                    await new Promise(r => setTimeout(r, 50))
+                    await new Promise(r => setTimeout(r, 100))
                     setLogs(prev => [...prev, `Seeking frame ${i}`])
                     ctx?.drawImage(video, 0, 0, canvas.width, canvas.height)
                     canvas.toBlob((blob) => {
@@ -118,7 +118,7 @@ export function useVideoSlicer(){
             for (let i = 0; i < maxFrames; i++){
                 await new Promise<void>((resolve) => {
                     video.onseeked = async () => {
-                        await new Promise(r => setTimeout(r, 50))
+                        await new Promise(r => setTimeout(r, 100))
                         ctx?.drawImage(video, 0, 0, canvas.width, canvas.height)
                         const bitmap = await createImageBitmap(canvas)
                         worker.postMessage(
