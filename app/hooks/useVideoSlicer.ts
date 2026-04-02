@@ -50,7 +50,7 @@ export function useVideoSlicer(){
                 video.onseeked = async () => {
                     if('requestVideoFrameCallback' in video){
                         await new Promise<void>(resolve => {
-                            (video as VideoWithVFC).requestVideoFrameCallback(() => resolve())
+                            video.requestVideoFrameCallback(() => resolve())
                         })
                            
                         } else {  
