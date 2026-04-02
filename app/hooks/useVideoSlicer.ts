@@ -12,7 +12,14 @@ export function useVideoSlicer(){
     const [frames, setFrames] = useState<FrameResult[]>([])
     const [progress, setProgress] = useState(0)
     const [isProcessing, setIsProcessing] = useState(false)
+    
+    // Debug für Safari
+    const [logs, setLogs] = useState<string[]>([])
+    
+    
+    
     const workerRef = useRef<Worker | null>(null)
+    
     
     
 
@@ -41,6 +48,7 @@ export function useVideoSlicer(){
         for (let i = 0; i < maxFrames; i++){
             await new Promise<void>((resolve) => {
                 video.onseeked = async () => {
+                    setLogs(prev => [...prev, `Seeking frame ${i}`])
                     ctx?.drawImage(video, 0, 0, canvas.width, canvas.height)
                     canvas.toBlob((blob) => {
                         if(blob){
@@ -140,5 +148,5 @@ export function useVideoSlicer(){
             setFrames([])
             setProgress(0)
         }
-        return {frames, progress, isProcessing, processVideo, cancel}
+        return {frames, progress, isProcessing, processVideo, cancel, logs} 
 }     

@@ -8,13 +8,16 @@ import { useVideoSlicer } from './hooks/useVideoSlicer';
 
 export default function Home() {
  
-  const { frames, progress, isProcessing, processVideo } = useVideoSlicer()
+  const { frames, progress, isProcessing, processVideo, cancel, logs } = useVideoSlicer()
   return (
     <div className="min-h-screen bg-black text-white p-10">
       <h1 className="text-3xl font-bold mb-8">FramePick</h1>
       <Dropzone onFileSelect={(file) => processVideo(file)} />
       {isProcessing && <ProgressBar current={progress} total={100} />}
       {frames.length > 0 && <FrameGallery frames={frames} />}
+      <div className="text-xs text-gray-400 mt-4 max-h-40 overflow-y-auto">
+        {logs.map((log, i) => <p key={i}>{log}</p>)}
+      </div>
     </div>
   );
 }
