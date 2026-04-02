@@ -16,11 +16,7 @@ export function useVideoSlicer(){
     // Debug für Safari
     const [logs, setLogs] = useState<string[]>([])
     
-    
-    
     const workerRef = useRef<Worker | null>(null)
-    
-    
     
 
     async function processVideoFallback(file: File, maxFrames: number) {
@@ -48,6 +44,7 @@ export function useVideoSlicer(){
         for (let i = 0; i < maxFrames; i++){
             await new Promise<void>((resolve) => {
                 video.onseeked = async () => {
+                    await new Promise(r => setTimeout(r, 50))
                     setLogs(prev => [...prev, `Seeking frame ${i}`])
                     ctx?.drawImage(video, 0, 0, canvas.width, canvas.height)
                     canvas.toBlob((blob) => {
@@ -121,6 +118,7 @@ export function useVideoSlicer(){
             for (let i = 0; i < maxFrames; i++){
                 await new Promise<void>((resolve) => {
                     video.onseeked = async () => {
+                        await new Promise(r => setTimeout(r, 50))
                         ctx?.drawImage(video, 0, 0, canvas.width, canvas.height)
                         const bitmap = await createImageBitmap(canvas)
                         worker.postMessage(
