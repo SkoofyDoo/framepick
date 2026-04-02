@@ -108,6 +108,7 @@ export function useVideoSlicer(){
             worker.onmessage = (event) => {
                 const {blob, index} = event.data
                 const imageUrl = URL.createObjectURL(blob)
+                setLogs(prev => [...prev, `Worker Frame ${index} recieved`])
                 setFrames(prev =>[...prev, {index, blob, imageUrl}])
                 completed++
                 setProgress(Math.round((completed / maxFrames) * 100))
@@ -129,6 +130,7 @@ export function useVideoSlicer(){
                         resolve()
                     }
                     video.currentTime = i * interval
+                    setLogs(prev => [...prev, `Seeking to frame ${i}`])
                 })
             }
 
