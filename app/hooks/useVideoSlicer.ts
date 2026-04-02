@@ -7,6 +7,10 @@ export interface FrameResult {
     ok?: boolean,
     imageUrl: string
 }
+interface VideoWithVFC extends HTMLVideoElement {
+    requestVideoFrameCallback: (callback: () => void) => void
+}
+
 
 export function useVideoSlicer(){
     const [frames, setFrames] = useState<FrameResult[]>([])
@@ -44,7 +48,14 @@ export function useVideoSlicer(){
         for (let i = 0; i < maxFrames; i++){
             await new Promise<void>((resolve) => {
                 video.onseeked = async () => {
-                    await new Promise(r => setTimeout(r, 100))
+                    if('requestVideoFrameCallback' in video){
+                        await new Promise<void>(resolve => {
+                            (video as VideoWithVFC).requestVideoFrameCallback(() => resolve())
+                        })
+                           
+                        } else {  
+                            await new Promise(r => setTimeout(r, 100))
+                    }
                     setLogs(prev => [...prev, `Seeking frame ${i}`])
                     ctx?.drawImage(video, 0, 0, canvas.width, canvas.height)
                     canvas.toBlob((blob) => {
