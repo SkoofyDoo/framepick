@@ -7,9 +7,9 @@ export interface FrameResult {
     ok?: boolean,
     imageUrl: string
 }
-interface VideoWithVFC extends HTMLVideoElement {
-    requestVideoFrameCallback: (callback: () => void) => void
-}
+// interface VideoWithVFC extends HTMLVideoElement {
+//     requestVideoFrameCallback: (callback: () => void) => void
+// }
 
 
 export function useVideoSlicer(){
